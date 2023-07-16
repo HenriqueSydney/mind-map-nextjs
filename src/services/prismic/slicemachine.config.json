@@ -1,0 +1,5 @@
+{
+  "repositoryName": "chapada-indaia-poc",
+  "adapter": "@slicemachine/adapter-next",
+  "libraries": ["./slices"]
+}

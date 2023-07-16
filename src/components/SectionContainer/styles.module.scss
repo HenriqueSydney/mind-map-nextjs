@@ -1,0 +1,21 @@
+.section-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+
+    align-items: flex-start;  
+
+    border-radius: 6px;
+
+    background:  var(--gray-100);
+    box-shadow: 0 0 0.5rem var(--gray-500);            
+    
+    gap: 1.5rem;
+
+    padding: 1.25rem 1.25rem 1rem 1rem; 
+    
+    
+    @media (max-width: 55rem) {
+        width: 100%;       
+    }
+}

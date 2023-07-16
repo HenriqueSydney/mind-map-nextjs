@@ -1,0 +1,40 @@
+.section-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 80rem;
+    gap: 2rem;
+
+    h1 {
+        font-size: 2rem;
+        color: var(--gray-600);
+    }
+
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;            
+
+    justify-content: space-between;
+
+    @media (max-width: 54.736rem) {
+        justify-content: space-evenly;           
+    }
+   
+    margin-bottom: 3rem;
+
+    gap: 3rem;
+}
+
+.product-suggestion {
+    justify-content: flex-start;
+
+
+    @media (max-width: 50rem) {
+        align-items:center;
+        justify-content: center;
+    }
+}
+
+       

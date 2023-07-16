@@ -1,0 +1,58 @@
+
+.container {        
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 55% 45%;     
+
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 2rem;    
+
+    gap: 3rem;
+
+    @media (max-width: 55rem) {
+        display: flex;
+        flex-direction: column;
+        margin-right: 0;
+    }   
+    
+    .stepper {
+        width: 100%;
+        display: flex;
+    
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .total {
+        width: 100%;
+        display: flex;
+
+        justify-content: center;
+
+        strong {
+            color: var(--gray-600);
+            font-size: 1.75rem;
+            text-align: center;
+        }
+        
+    }   
+    
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    
+        gap: 5rem;
+    
+        padding: 2rem 1rem;;
+    
+        margin-top: 1rem;
+    }
+    
+}
+ 
+
+

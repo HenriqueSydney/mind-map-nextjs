@@ -1,0 +1,133 @@
+// schema.prisma
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+enum Status {
+  PENDING
+  PAID
+  CONFIRMED
+  CONCLUDED
+}
+
+model User {
+  id                    String    @id @default(uuid())
+  name                  String
+  email                 String    @unique
+  emailVerified         DateTime? @map("email_verified")
+  verificationEmailHash String?   @unique @default(uuid()) @map("verification_email_hash")
+  hashedPassword        String?   @map("hashed_password")
+  createdAt             DateTime  @default(now()) @map(name: "created_at")
+  updatedAt             DateTime  @updatedAt @map(name: "updated_at")
+
+  accounts                   Account[]
+  sessions                   Session[]
+  ActivityReservation        ActivityReservation[]
+  AccommodationsReservations AccommodationReservation[]
+
+  @@map(name: "users")
+}
+
+model Account {
+  id                  String  @id @default(cuid())
+  user_id             String
+  type                String
+  provider            String
+  provider_account_id String
+  refresh_token       String? @db.Text
+  access_token        String? @db.Text
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String? @db.Text
+  session_state       String?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([provider, provider_account_id])
+  @@index([user_id])
+  @@map("accounts")
+}
+
+model Session {
+  id            String   @id @default(cuid())
+  session_token String   @unique
+  user_id       String
+  expires       DateTime
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("sessions")
+}
+
+model Accommodation {
+  id        String   @id @default(uuid())
+  name      String
+  quantity  Int
+  price     Int
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  AccommodationsReservations AccommodationReservation[]
+
+  @@map(name: "accommodations")
+}
+
+model AccommodationReservation {
+  id              String   @id @default(uuid())
+  accommodationId String   @map(name: "accommodation_id")
+  totalPrice      Int      @map(name: "total_price")
+  pricePerDay     Int      @map(name: "price_per_day")
+  arrivalDate     DateTime @map(name: "arrival_date")
+  departureDate   DateTime @map(name: "departure_date")
+  guest_name      String
+  email           String
+  status          Status   @default(PENDING)
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
+
+  Accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  Guest         User?         @relation(fields: [email], references: [email])
+
+  @@map(name: "accommodation_reservations")
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  name        String
+  adultPrice  Int      @map(name: "adult_price")
+  childPrice  Int      @map(name: "child_price")
+  seniorPrice Int      @map(name: "senior_price")
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+
+  ActivityReservations ActivityReservation[]
+
+  @@map(name: "activities")
+}
+
+model ActivityReservation {
+  id         String   @id @default(uuid())
+  activityId String   @map(name: "activity_id")
+  totalPrice Int      @map(name: "total_price")
+  date       DateTime @map(name: "date")
+  guest_name String
+  email      String
+  status     Status   @default(PENDING)
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @updatedAt @map(name: "updated_at")
+
+  Guest    User?    @relation(fields: [email], references: [email])
+  Activity Activity @relation(fields: [activityId], references: [id])
+
+  @@map(name: "activity_reservations")
+}
