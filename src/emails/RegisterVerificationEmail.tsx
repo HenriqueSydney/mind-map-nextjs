@@ -5,44 +5,33 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Preview,
   Row,
   Section,
   Text,
-  Link,
 } from '@react-email/components'
+import EmailFooter from './EmailFooter'
+import EmailHeader from './EmailHeader'
 
 interface RappellingEmailProps {
   name: string
   email: string
-  hashConfirmation: string
+  hashConfirmation: number
 }
 
 export default function RegisterVerificationEmail({
   email = 'henriquesydney@hotmail.com',
   name = 'Henrique Sydney Ribeiro Lima',
-  hashConfirmation = '',
+  hashConfirmation = 1234,
 }: RappellingEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Pleasure Nature Inn</Preview>
+      <Preview>Simply Nature Inn</Preview>
       <Body style={main}>
         <Container>
-          <Section style={logo}>
-            <Img
-              src={`https://cdn.paytour.com.br/assets/images/logos/logo-634232e961279a814e4a84308c31f36cd025830d.png?v=1687920216`}
-            />
-          </Section>
-
+          <EmailHeader />
           <Section style={content}>
-            <Img
-              width={620}
-              style={{ height: '300px', objectFit: 'cover' }}
-              src={`https://images.unsplash.com/photo-1629570682819-90789d43672a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80`}
-            />
-
             <Row style={{ ...boxInfos, paddingBottom: '0' }}>
               <Column>
                 <Heading
@@ -56,19 +45,22 @@ export default function RegisterVerificationEmail({
                 </Heading>
                 <Text style={paragraph}>
                   Foi iniciado um cadastro em nosso site com este email. Caso
-                  tenha sido você que iniciou este cadastro, clique no link
-                  abaixo para confirmar e seja muito bem vindo à Pleasure Nature
-                  Inn
+                  tenha sido você que iniciou este cadastro, copie e cole o
+                  código abaixo na página de confirmação
                 </Text>
 
                 <Text style={{ ...paragraph, textAlign: 'center' }}>
-                  <b>Link de confirmação: </b>
+                  <strong>CÓDIGO DE CONFIRMAÇÃO: </strong>
                   <br />
-                  <Link
-                    href={`http://localhost:3000/api/users?email=${email}&confirmationHash=${hashConfirmation}`}
+                  <br />
+                  <strong
+                    style={{
+                      fontSize: 42,
+                    }}
                   >
-                    {`http://localhost:3000/api/users?email=${email}&confirmationHash=${hashConfirmation}`}
-                  </Link>
+                    {hashConfirmation}
+                  </strong>
+                  <br />
                 </Text>
 
                 <Text style={paragraph}>
@@ -95,17 +87,7 @@ export default function RegisterVerificationEmail({
             </Row>
           </Section>
 
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 12,
-              color: 'rgb(0,0,0, 0.7)',
-            }}
-          >
-            © 2023 | Pleasure Nature Inn, Heaven in earth - Spa Lagoon - Access
-            DF 1021, Farm Nature. Brasília/DF, XX.XXX-XXX, CNPJ:
-            XX.XXX.XXX/XXXX-XX | http://localhost:3000
-          </Text>
+          <EmailFooter />
         </Container>
       </Body>
     </Html>
@@ -121,11 +103,6 @@ const main = {
 const paragraph = {
   fontSize: 16,
 }
-
-const logo = {
-  padding: '30px 20px',
-}
-
 const content = {
   border: '1px solid rgb(0,0,0, 0.1)',
   borderRadius: '3px',

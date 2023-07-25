@@ -42,7 +42,7 @@ export function SliderWithParallax({
             <Parallax bgImage={src} strength={500} blur={{ min: -5, max: 5 }}>
               <div className={styles['banner-info']} style={{ height }}>
                 <div className={styles['text-container']}>
-                  <h1>Chapada Indiaiá</h1>
+                  <h1>Simply Nature</h1>
                   <strong>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Voluptates tenetur sapiente debitis error rem nobis

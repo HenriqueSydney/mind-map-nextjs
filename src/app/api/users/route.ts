@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import prisma from '@/lib/prisma'
-import { render } from '@react-email/render'
+// import { render } from '@react-email/render'
 import { hash } from 'bcryptjs'
 
-import { generateJwtToken, verifyJwtToken } from '@/utils/jwtToken'
-import { sendEmail } from '@/lib/emails'
+// import { sendEmail } from '@/lib/emails'
 
-import RegisterVerificationEmail from '@/emails/RegisterVerificationEmail'
-import { ExpiredTokenError } from '@/app/Errors/InvalidTokenError.ts copy'
-import { InvalidTokenError } from 'jwt-decode'
+// import RegisterVerificationEmail from '@/emails/RegisterVerificationEmail'
+import { getRandomIntInclusive } from '@/utils/randomNumber'
 
 export async function POST(request: NextRequest) {
-  const { name, email, password } = await request.json()
+  const { name, email, password, acceptNotifications } = await request.json()
 
   const userExists = await prisma.user.findUnique({
     where: {
@@ -29,26 +27,23 @@ export async function POST(request: NextRequest) {
 
   const hashedPassword = await hash(password, 6)
 
-  const jwtData = {
-    name,
-    email,
-  }
+  const verificationEmailNumber = getRandomIntInclusive(1000, 9999)
 
-  const verificationEmailHash = generateJwtToken({ data: jwtData })
-
-  const emailHtml = render(
+  /* const emailHtml = render(
     RegisterVerificationEmail({
       email,
       name,
-      hashConfirmation: verificationEmailHash,
+      hashConfirmation: verificationEmailNumber,
     }),
-  )
+  ) */
 
-  sendEmail({
+  console.log(verificationEmailNumber)
+
+  /* sendEmail({
     to: email,
     subject: name,
     html: emailHtml,
-  })
+  }) */
 
   if (userExists) {
     const user = await prisma.user.update({
@@ -57,7 +52,8 @@ export async function POST(request: NextRequest) {
       },
       data: {
         hashedPassword,
-        verificationEmailHash,
+        verificationEmailNumber,
+        acceptNotifications,
       },
     })
     return NextResponse.json(user, { status: 200 })
@@ -68,61 +64,10 @@ export async function POST(request: NextRequest) {
       name,
       email,
       hashedPassword,
-      verificationEmailHash,
+      verificationEmailNumber,
+      acceptNotifications,
     },
   })
 
   return NextResponse.json(user, { status: 201 })
-}
-
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const email = searchParams.get('email')
-  const confirmationHash = searchParams.get('confirmationHash')
-
-  if (!email) {
-    return NextResponse.json({ message: 'User not found.' }, { status: 400 })
-  }
-
-  const userExists = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  })
-
-  if (!userExists) {
-    return NextResponse.json({ message: 'User not found.' }, { status: 404 })
-  }
-
-  if (
-    !confirmationHash ||
-    userExists.verificationEmailHash !== confirmationHash
-  ) {
-    return NextResponse.json(
-      { message: 'Verification e-mail hash not equal.' },
-      { status: 401 },
-    )
-  }
-
-  try {
-    verifyJwtToken(confirmationHash)
-  } catch (error) {
-    if (error instanceof ExpiredTokenError) {
-      return NextResponse.json({ message: 'Expired token.' }, { status: 401 })
-    } else if (error instanceof InvalidTokenError) {
-      return NextResponse.json({ message: 'Invalid Token.' }, { status: 401 })
-    }
-    return NextResponse.json({ message: 'Unknown error.' }, { status: 500 })
-  }
-
-  const user = await prisma.user.update({
-    where: {
-      email,
-    },
-    data: {
-      emailVerified: new Date(),
-    },
-  })
-
-  return NextResponse.json(user, { status: 200 })
 }

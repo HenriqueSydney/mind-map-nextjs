@@ -71,14 +71,15 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       cartItemsName: [],
     },
     (initialState) => {
-      const storedStateAsJSON = localStorage.getItem(
-        '@chapada-indaia:cart-state-1.0.0',
-      )
+      if (typeof window !== 'undefined') {
+        const storedStateAsJSON = localStorage.getItem(
+          '@chapada-indaia:cart-state-1.0.0',
+        )
 
-      if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
+        if (storedStateAsJSON) {
+          return JSON.parse(storedStateAsJSON)
+        }
       }
-
       return initialState
     },
   )

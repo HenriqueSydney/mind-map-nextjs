@@ -14,6 +14,9 @@ import { Divider } from '../../Divider'
 import { InputText } from '../../Form/InputText'
 
 import styles from './styles.module.scss'
+import { useRouter } from 'next/navigation'
+import { InvalidCredentialsError } from '@/app/Errors/InvalidCredentailsError'
+import { toast } from 'react-toastify'
 
 const loginModalSchema = z.object({
   email: z.string().email({ message: 'Digite um e-mail válido' }),
@@ -25,6 +28,7 @@ const loginModalSchema = z.object({
 type loginModalFormInputs = z.infer<typeof loginModalSchema>
 
 export function LoginModal() {
+  const navigation = useRouter()
   const {
     register,
     handleSubmit,
@@ -35,9 +39,28 @@ export function LoginModal() {
   })
 
   async function handleLogin(data: loginModalFormInputs) {
-    const { password, email } = data
-    console.log({ password, email })
-    reset()
+    try {
+      const { password, email } = data
+      const res = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+
+      if (!res?.error) {
+        navigation.refresh()
+      } else {
+        throw new InvalidCredentialsError()
+      }
+    } catch (error) {
+      if (error instanceof InvalidCredentialsError) {
+        toast.error('E-mail ou senha incorreta.')
+      } else {
+        toast.error('Erro inesperado. Tente novamente mais tarde.')
+      }
+    } finally {
+      reset()
+    }
   }
 
   return (
@@ -56,7 +79,13 @@ export function LoginModal() {
         error={errors.password}
         {...register('password')}
       />
-      <ButtonIcon type="submit" disabled={!!isSubmitting} title="Entrar" />
+      <ButtonIcon
+        type="submit"
+        disabled={isSubmitting}
+        isSubmitting={isSubmitting}
+        title="Entrar"
+      />
+
       <div className={styles.registerContainer}>
         <strong>Ainda não possui uma conta?</strong>
         <Link href="/register">Cadastre-se</Link>

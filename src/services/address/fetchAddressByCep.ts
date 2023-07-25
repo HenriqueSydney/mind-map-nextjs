@@ -23,15 +23,12 @@ export async function fetchAddressByCep(
 
     const data = await response.json()
 
-    console.log(data)
     if (!data) {
       return null
     }
 
     return data
-  } catch (error) {
-    console.log({ error })
+  } catch {
+    return null
   }
-
-  return null
 }

@@ -1,5 +1,6 @@
 import { Adapter } from 'next-auth/adapters'
 import prisma from '../prisma'
+import { cartService } from '@/services/cart/cart'
 
 export function PrismaAdapter(): Adapter {
   return {
@@ -26,6 +27,9 @@ export function PrismaAdapter(): Adapter {
         },
       })
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       if (userExists) {
         const updatedUser = await prisma.user.update({
           data: {
@@ -41,6 +45,8 @@ export function PrismaAdapter(): Adapter {
           emailVerified: null,
           id: updatedUser.id,
           name: updatedUser.name,
+          role: updatedUser.role,
+          cart: cartData,
         }
       }
 
@@ -56,6 +62,8 @@ export function PrismaAdapter(): Adapter {
         emailVerified: null,
         id: newUser.id,
         name: newUser.name,
+        role: newUser.role,
+        cart: cartData,
       }
     },
 
@@ -83,6 +91,9 @@ export function PrismaAdapter(): Adapter {
 
       const { expires, session_token, user, user_id } = session
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       return {
         session: {
           expires,
@@ -95,6 +106,8 @@ export function PrismaAdapter(): Adapter {
           emailVerified: null,
           id: user.id,
           name: user.name,
+          role: user.role,
+          cart: cartData,
         },
       }
     },
@@ -110,12 +123,17 @@ export function PrismaAdapter(): Adapter {
         return null
       }
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       return {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         email: user.email!,
         emailVerified: null,
         id: user.id,
         name: user.name,
+        role: user.role,
+        cart: cartData,
       }
     },
 
@@ -138,12 +156,17 @@ export function PrismaAdapter(): Adapter {
 
       const { user } = account
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       return {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         email: user.email!,
         emailVerified: null,
         id: user.id,
         name: user.name,
+        role: user.role,
+        cart: cartData,
       }
     },
 
@@ -158,12 +181,17 @@ export function PrismaAdapter(): Adapter {
         return null
       }
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       return {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         email: user.email!,
         emailVerified: null,
         id: user.id,
         name: user.name,
+        role: user.role,
+        cart: cartData,
       }
     },
 
@@ -212,12 +240,17 @@ export function PrismaAdapter(): Adapter {
         where: { id: user.id },
       })
 
+      const { getCartData } = cartService()
+      const cartData = getCartData()
+
       return {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         email: updatedUser.email!,
         emailVerified: null,
         id: updatedUser.id,
         name: updatedUser.name,
+        role: updatedUser.role,
+        cart: cartData,
       }
     },
   }

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 
 interface IOverlay {
-  selected: boolean
   onClick: () => void
 }
 
-export function Overlay({ selected, onClick }: IOverlay) {
+export function Overlay({ onClick }: IOverlay) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (

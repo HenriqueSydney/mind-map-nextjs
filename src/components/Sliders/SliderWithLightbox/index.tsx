@@ -44,7 +44,6 @@ export function SliderWithLightbox({ images }: SliderProps) {
   })
 
   function handleImageClick(name: string) {
-    console.log(images)
     setInitialImageLightbox(name)
     setIsLightboxOpen(true)
   }

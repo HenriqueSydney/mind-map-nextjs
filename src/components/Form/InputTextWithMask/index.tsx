@@ -20,7 +20,11 @@ const InputWithMaskBase: ForwardRefRenderFunction<
 > = ({ mask, label = '', error = null, ...rest }, ref) => {
   return (
     <div className={styles['input-container']}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && (
+        <div className={styles.label}>
+          <label>{label}</label>
+        </div>
+      )}
       <div className={styles['input-wrapper']}>
         <InputMask
           type="text"

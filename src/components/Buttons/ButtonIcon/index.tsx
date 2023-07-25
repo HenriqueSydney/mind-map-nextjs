@@ -26,15 +26,17 @@ const ButtonBase: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   const variantColor = variant === 'PRIMARY' ? styles.primary : styles.secondary
   return (
     <button
-      className={`${styles.container} ${variantColor}`}
+      className={`${styles.container} ${variantColor} ${
+        isSubmitting ? 'submitting' : ''
+      }`}
       ref={ref}
       disabled={disabled}
       {...rest}
     >
       {isSubmitting && <ClipLoader color="#F0F0F0" size={24} />}
-      {icon && !disabled && icon}
-      {title && !disabled && title}
-      {children && !disabled && children}
+      {icon && icon}
+      {title && title}
+      {children && children}
     </button>
   )
 }

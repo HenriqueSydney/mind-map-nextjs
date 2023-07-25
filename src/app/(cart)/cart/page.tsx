@@ -12,14 +12,29 @@ import { CartContext } from '@/context/CartContext'
 
 import { SectionContainer } from '@/components/SectionContainer'
 import { Divider } from '@/components/Divider'
-import { CheckoutForm } from './CheckoutForm'
 import { EmptyCart } from './EmptyCart'
 import { FilledCart } from './FilledCart'
+import { AddressCheckoutForm } from './AddressCheckoutForm'
+import { PersonalDataCheckoutForm } from './PersonalDataCheckoutForm'
+import NavigationButtons from './NavigationButtons'
+import CheckoutWallet from './CheckoutWallet'
 
 import styles from './page.module.scss'
-import { ButtonIcon } from '@/components/Buttons/ButtonIcon'
+
+enum Actions {
+  FORWARD,
+  BACKWARD,
+  BEGIN,
+}
 
 const checkoutFormValidationSchema = zod.object({
+  name: zod.string().min(3, 'O primeiro nome deve ter no mínimo 3 caracteres'),
+  surname: zod.string().min(3, 'O sobrenome deve ter no mínimo 3 caracteres'),
+  email: zod.string().email({ message: 'E-mail inválido' }),
+  phoneNumber: zod
+    .string()
+    .min(15, 'O telefone deve ter no mínimo 11 dígitos')
+    .max(15, 'O telefone deve ter no máximo 11 dígitos'),
   zip_code: zod
     .string()
     .min(8, 'O CEP deve ter no mínimo 8 dígitos')
@@ -42,12 +57,19 @@ export type CheckoutFormData = zod.infer<typeof checkoutFormValidationSchema>
 export default function Cart() {
   const [totalCart, setTotalCart] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [preferenceId, setPreferenceId] = useState('')
 
   const { cart, cleanCart } = useContext(CartContext)
 
   const checkoutForm = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutFormValidationSchema),
     defaultValues: {
+      name: '',
+      surname: '',
+      email: '',
+      phoneNumber: '',
       zip_code: '',
       street: '',
       number: '',
@@ -58,17 +80,50 @@ export default function Cart() {
     },
   })
 
-  const { handleSubmit, reset } = checkoutForm
+  const { handleSubmit, reset, getValues } = checkoutForm
 
-  // const { errors } = formState
+  function handleCreatePreference() {
+    handleChangeStep(Actions.FORWARD)
+
+    setIsLoading(true)
+
+    const checkOutFormData = getValues()
+
+    fetch('/api/mercado-pago', {
+      method: 'POST',
+      body: JSON.stringify({ cartData: cart, checkOutFormData }),
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then((preference) => {
+        setPreferenceId(preference.id)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+
+  async function handleChangeStep(action: Actions) {
+    if (action === Actions.BACKWARD) {
+      setActiveStep((state) => state - 1)
+    } else if (action === Actions.FORWARD) {
+      setActiveStep((state) => state + 1)
+    } else {
+      setActiveStep(0)
+    }
+  }
 
   function handleCheckout(data: CheckoutFormData) {
     if (cart.length === 0) {
-      return
+      return data
     }
 
-    cleanCart()
-    reset()
+    // cleanCart()
+    // reset()
   }
 
   useEffect(() => {
@@ -78,50 +133,40 @@ export default function Cart() {
 
   if (cart.length === 0) {
     return (
-      <div className={styles.container}>
-        <SectionContainer>
-          <Divider title="Seu carrinho" titleType="header" />
-          <EmptyCart />
-        </SectionContainer>
-      </div>
+      <SectionContainer>
+        <Divider title="Seu carrinho" titleType="header" />
+        <EmptyCart />
+      </SectionContainer>
     )
   }
 
   return (
-    <main className={styles.container}>
+    <main className={`${styles.container}`}>
       <SectionContainer>
         <Stepper activeStep={activeStep} className={styles.stepper}>
           <Step label="Seus Dados" />
+          <Step label="Endereço" />
           <Step label="Pagamento" />
           <Step label="Confirmação" />
         </Stepper>
         <form onSubmit={handleSubmit(handleCheckout)} action="/success-order">
-          <h1>Complete seu dados para continuar</h1>
-
           <FormProvider {...checkoutForm}>
-            <CheckoutForm />
-          </FormProvider>
+            {activeStep === 0 && <PersonalDataCheckoutForm />}
+            {activeStep === 1 && <AddressCheckoutForm />}
 
-          <div className={styles.buttons}>
-            {activeStep > 0 && (
-              <ButtonIcon
-                title="Voltar"
-                onClick={() => setActiveStep((state) => state - 1)}
-              />
-            )}
-            {activeStep < 2 && (
-              <ButtonIcon
-                title="Avançar"
-                onClick={() => setActiveStep((state) => state + 1)}
-              />
-            )}
             {activeStep === 2 && (
-              <ButtonIcon
-                title="Confirmar e realizar pagamento"
-                onClick={() => setActiveStep(0)}
+              <CheckoutWallet
+                preferenceId={preferenceId}
+                isLoading={isLoading}
               />
             )}
-          </div>
+
+            <NavigationButtons
+              handleChangeStep={handleChangeStep}
+              handleCreatePreference={handleCreatePreference}
+              activeStep={activeStep}
+            />
+          </FormProvider>
         </form>
       </SectionContainer>
       <SectionContainer>

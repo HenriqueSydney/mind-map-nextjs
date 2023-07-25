@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 
-import NextAuth from 'next-auth'
-
+import { CartData } from '@/services/cart/cart'
+import { Role } from '@prisma/client'
 declare module 'next-auth' {
   interface User {
     email: string
     id: string
     name: string
+    role: Role
+    cart: CartData | null
   }
 
   interface Session {

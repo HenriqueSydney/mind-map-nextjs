@@ -69,7 +69,7 @@ export async function getActivities(
       name: image.image.alt,
     }
   })
-  console.log(productImages)
+
   const activityInfo = {
     id: activityId,
     name: prismic.asText(nome_da_atividade),

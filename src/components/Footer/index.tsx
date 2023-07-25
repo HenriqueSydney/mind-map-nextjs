@@ -28,7 +28,7 @@ export function Footer() {
       <div className={styles['location-image-container']}>
         <Image
           src="/mapa.png"
-          alt="Mapa com a localização da Chapada Indaiá"
+          alt="Mapa com a localização da Simply Nature"
           width={900}
           height={270}
           className={styles['location-image']}
@@ -39,8 +39,8 @@ export function Footer() {
             <div className={styles['info-container']}>
               <FontAwesomeIcon icon={faMapLocationDot} />
               <span>
-                Recreio dos Indaiás - Rio Itiquira - Acesso GO 430, Fazenda
-                Citates. Formosa/GO, 73801-220
+                Heaven in earth - Spa Lagoon - Access DF 1021, Farm Nature.
+                Brasília/DF
               </span>
             </div>
           </div>
@@ -62,38 +62,38 @@ export function Footer() {
       <div className={styles['section-container']}>
         <section>
           <div className={styles['social-media-container']}>
-            <img src="/logo.png" alt="" width={250} height={250} />
+            <img src="/logo_branco.png" alt="" width={200} height={200} />
             <div className={styles['social-media-icons']}>
-              <Link
+              <a
                 href="https://www.instagram.com/chapadaindaia/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faInstagram} />
-              </Link>
-              <Link
+              </a>
+              <a
                 href="https://www.instagram.com/chapadaindaia/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faPinterest} />
-              </Link>
-              <Link
+              </a>
+              <a
                 href="https://www.instagram.com/chapadaindaia/"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FontAwesomeIcon icon={faFacebook} />
-              </Link>
+              </a>
             </div>
           </div>
         </section>
         <section>
           <h1>Informações</h1>
           <div>
-            <strong>CHAPADA DO INDAIA ECOPARQUE LTDA.</strong>
+            <strong>SIMPLY NATURE INN</strong>
             <br />
-            <span>CNPJ: 26.475.871/0001-55</span>
+            <span>CNPJ: XX.XXX.XXX/XXXX-XX</span>
           </div>
           <Link href="/privacy-policy" className={styles['info-container']}>
             <FontAwesomeIcon icon={faFile} />
@@ -109,17 +109,18 @@ export function Footer() {
           <h1>Contato</h1>
           <div className={styles['info-container']}>
             <FontAwesomeIcon icon={faWhatsapp} />
-            <Link
+            <a
               href="http://api.whatsapp.com/send?1=pt_BR&phone=5561995125151&text=Olá, tudo bem? Gostaria de informações sobre (...)"
               target="_blank"
+              rel="noreferrer"
             >
-              +55 (61) 995125151
-            </Link>
+              +55 (xx) xxxxx-xxxx
+            </a>
           </div>
           <div className={styles['info-container']}>
             <FontAwesomeIcon icon={faMailBulk} />
-            <a href={`mailto:chapadaindaia@gmail.com`}>
-              chapadaindaia@gmail.com
+            <a href={`mailto:exemple@simply-nature.com`}>
+              exemple@simply-nature.com
             </a>
           </div>
         </section>

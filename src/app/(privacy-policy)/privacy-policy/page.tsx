@@ -10,23 +10,21 @@ export default async function PrivacyPolicy() {
   return (
     <>
       <main className={styles.container}>
-        <div className={styles.policy}>
-          <div className={styles.title}>
-            <h1>{privacyPolicy?.title}</h1>
-            <strong>Atualizada em {privacyPolicy?.updatedAt}</strong>
-          </div>
-
-          {!privacyPolicy ? (
-            <Skeleton count={20} />
-          ) : (
-            <div
-              className={cmsStyles.postContent}
-              dangerouslySetInnerHTML={{
-                __html: privacyPolicy.content,
-              }}
-            />
-          )}
+        <div className={styles.title}>
+          <h1>{privacyPolicy?.title}</h1>
+          <strong>Atualizada em {privacyPolicy?.updatedAt}</strong>
         </div>
+
+        {!privacyPolicy ? (
+          <Skeleton count={20} />
+        ) : (
+          <div
+            className={cmsStyles.postContent}
+            dangerouslySetInnerHTML={{
+              __html: privacyPolicy.content,
+            }}
+          />
+        )}
       </main>
     </>
   )

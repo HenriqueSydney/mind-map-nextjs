@@ -1,0 +1,36 @@
+.contact {
+    margin-left: 2.5rem;
+
+    a:hover {
+        text-decoration: underline;
+        color: var(--green-500);
+    }
+}
+
+.share {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    font-size: 1.25rem;
+
+    margin: 1.25rem 4rem;
+}
+
+.social-media-icons {
+    display: flex;
+
+    margin: -1rem auto;
+
+    gap: 1.5rem;
+
+    svg {
+        font-size: 2rem;
+
+        &:hover{
+            color: var(--green-500);
+        }
+    }
+}

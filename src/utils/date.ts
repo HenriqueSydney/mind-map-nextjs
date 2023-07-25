@@ -4,7 +4,7 @@ export function dateDifferenceInDays(
   initialDate: Date,
   finalDate: Date,
 ): number {
-  return differenceInDays(initialDate, finalDate)
+  return differenceInDays(finalDate, initialDate)
 }
 
 export function datePtBrFormatter(date: Date): string {

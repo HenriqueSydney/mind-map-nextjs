@@ -20,6 +20,7 @@ import styles from './styles.module.scss'
 import { dateDifferenceInDays } from '@/utils/date'
 import { CartContext } from '@/context/CartContext'
 import { useRouter } from 'next/navigation'
+import { cartService } from '@/services/cart/cart'
 
 interface IAccommodationFormCheckout {
   accommodation: AccommodationData | null
@@ -86,6 +87,8 @@ export function AccommodationFormCheckout({
 
   const { addNewItemToCart } = useContext(CartContext)
 
+  const { addNewItemToCart: AddCartCookie, getCartData } = cartService()
+
   function handleAddItensToCart(data: AccommodationFormCheckoutData) {
     if (!accommodation) {
       return false
@@ -111,6 +114,23 @@ export function AccommodationFormCheckout({
         quantityOfDays: summary.quantityOfDays,
       },
     })
+
+    AddCartCookie({
+      id: accommodation.id,
+      isIncludedInCart: true,
+      subtotal: summary.subtotal,
+      type: 'accommodation',
+      accommodation: {
+        accommodationId: accommodation.id,
+        title: accommodation.name,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
+        quantityOfAccommodations: summary.quantityOfAccommodations,
+        quantityOfDays: summary.quantityOfDays,
+      },
+    })
+
+    getCartData()
 
     reset()
 
@@ -151,7 +171,7 @@ export function AccommodationFormCheckout({
   useEffect(() => {
     const [checkIn, checkOut] = watchedValues.checkInAndCheckOutDate
     if (accommodation && checkIn && checkOut) {
-      const quantityOfDays = dateDifferenceInDays(checkOut, checkIn) + 1
+      const quantityOfDays = dateDifferenceInDays(checkIn, checkOut) + 1
 
       const quantityOfAccommodations = watchedValues.quantityOfAccommodations
 

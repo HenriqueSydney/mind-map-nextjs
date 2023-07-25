@@ -14,25 +14,32 @@ datasource db {
 
 enum Status {
   PENDING
-  PAID
   CONFIRMED
+  APPROVED
   CONCLUDED
+  CANCELLED
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 model User {
-  id                    String    @id @default(uuid())
-  name                  String
-  email                 String    @unique
-  emailVerified         DateTime? @map("email_verified")
-  verificationEmailHash String?   @unique @default(uuid()) @map("verification_email_hash")
-  hashedPassword        String?   @map("hashed_password")
-  createdAt             DateTime  @default(now()) @map(name: "created_at")
-  updatedAt             DateTime  @updatedAt @map(name: "updated_at")
+  id                      String    @id @default(uuid())
+  name                    String
+  email                   String    @unique
+  emailVerified           DateTime? @map("email_verified")
+  verificationEmailNumber Int?      @map("verification_email_number")
+  hashedPassword          String?   @map("hashed_password")
+  role                    Role      @default(USER)
+  acceptNotifications     Boolean   @default(false) @map("accept_notifications")
+  createdAt               DateTime  @default(now()) @map(name: "created_at")
+  updatedAt               DateTime  @updatedAt @map(name: "updated_at")
 
-  accounts                   Account[]
-  sessions                   Session[]
-  ActivityReservation        ActivityReservation[]
-  AccommodationsReservations AccommodationReservation[]
+  accounts Account[]
+  sessions Session[]
+  Order    Order[]
 
   @@map(name: "users")
 }
@@ -82,25 +89,6 @@ model Accommodation {
   @@map(name: "accommodations")
 }
 
-model AccommodationReservation {
-  id              String   @id @default(uuid())
-  accommodationId String   @map(name: "accommodation_id")
-  totalPrice      Int      @map(name: "total_price")
-  pricePerDay     Int      @map(name: "price_per_day")
-  arrivalDate     DateTime @map(name: "arrival_date")
-  departureDate   DateTime @map(name: "departure_date")
-  guest_name      String
-  email           String
-  status          Status   @default(PENDING)
-  createdAt       DateTime @default(now()) @map(name: "created_at")
-  updatedAt       DateTime @updatedAt @map(name: "updated_at")
-
-  Accommodation Accommodation @relation(fields: [accommodationId], references: [id])
-  Guest         User?         @relation(fields: [email], references: [email])
-
-  @@map(name: "accommodation_reservations")
-}
-
 model Activity {
   id          String   @id @default(uuid())
   name        String
@@ -115,19 +103,54 @@ model Activity {
   @@map(name: "activities")
 }
 
-model ActivityReservation {
-  id         String   @id @default(uuid())
-  activityId String   @map(name: "activity_id")
-  totalPrice Int      @map(name: "total_price")
-  date       DateTime @map(name: "date")
-  guest_name String
-  email      String
-  status     Status   @default(PENDING)
-  createdAt  DateTime @default(now()) @map(name: "created_at")
-  updatedAt  DateTime @updatedAt @map(name: "updated_at")
+model Order {
+  id           String  @id @default(uuid())
+  status       Status  @default(PENDING)
+  paymentId    Int?    @map(name: "payment_id")
+  guest_name   String
+  email        String
+  userId       String?
+  preferenceId String  @unique @map(name: "preference_id")
 
-  Guest    User?    @relation(fields: [email], references: [email])
-  Activity Activity @relation(fields: [activityId], references: [id])
+  AccommodationsReservations AccommodationReservation[]
+  ActivityReservations       ActivityReservation[]
+  User                       User?                      @relation(fields: [userId], references: [id])
+
+  @@map(name: "order")
+}
+
+model AccommodationReservation {
+  id              String   @id @default(uuid())
+  accommodationId String   @map(name: "accommodation_id")
+  quantity        Int
+  totalPrice      Int      @map(name: "total_price")
+  pricePerDay     Int      @map(name: "price_per_day")
+  arrivalDate     DateTime @map(name: "arrival_date")
+  departureDate   DateTime @map(name: "departure_date")
+  orderId         String   @default(uuid())
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
+
+  Accommodation Accommodation? @relation(fields: [accommodationId], references: [id])
+  Order         Order?         @relation(fields: [orderId], references: [id])
+
+  @@map(name: "accommodation_reservations")
+}
+
+model ActivityReservation {
+  id                String   @id @default(uuid())
+  activityId        String   @map(name: "activity_id")
+  quantityOfAdults  Int      @map(name: "quantity_of_adults")
+  quantityOfChilds  Int      @map(name: "quantity_of_childs")
+  quantityOfSeniors Int      @map(name: "quantity_of_seniors")
+  totalPrice        Int      @map(name: "total_price")
+  date              DateTime @map(name: "date")
+  orderId           String   @default(uuid())
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @updatedAt @map(name: "updated_at")
+
+  Activity Activity? @relation(fields: [activityId], references: [id])
+  Order    Order?    @relation(fields: [orderId], references: [id])
 
   @@map(name: "activity_reservations")
 }

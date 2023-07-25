@@ -66,13 +66,10 @@ export default function PhotoGallery() {
           <>
             <Gallery
               initState={false}
-              overlay={(name, state) => (
-                <Overlay
-                  selected={state}
-                  onClick={() => handleImageClick(name)}
-                />
+              overlay={(name) => (
+                <Overlay onClick={() => handleImageClick(name)} />
               )}
-              images={images!}
+              images={images}
               widths={WIDTHS}
               ratios={RATIOS}
             />

@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 
 import * as z from 'zod'
@@ -7,6 +9,7 @@ import { InputText } from '../../Form/InputText'
 import { ButtonIcon } from '../../Buttons/ButtonIcon'
 
 import styles from './styles.module.scss'
+import { useRouter } from 'next/navigation'
 
 const getReservationInfoModalSchema = z.object({
   reservationCode: z.string(),
@@ -27,11 +30,15 @@ export function GetReservationInfoModal() {
     resolver: zodResolver(getReservationInfoModalSchema),
   })
 
+  const navigation = useRouter()
+
   async function handleCreateNewTransaction(
     data: getReservationInfoModalFormInputs,
   ) {
     const { reservationCode, email } = data
-    console.log({ reservationCode, email })
+
+    navigation.push(`/reservations/search/${reservationCode}/${email}`)
+
     reset()
   }
 

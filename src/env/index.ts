@@ -6,6 +6,7 @@ const envSchema = z.object({
     .default('development'),
   PRISMIC_ENDPOINT: z.string(),
   PRISMIC_ACCESS_TOKEN: z.string(),
+  NEXTAUTH_SECRET: z.string(),
   // JWT_SECRET_KEY: z.string(),
   // SMTP_HOST: z.string(),
   // SMTP_PORT: z.number(),
