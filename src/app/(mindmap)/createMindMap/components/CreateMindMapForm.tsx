@@ -14,8 +14,8 @@ import styles from './styles.module.scss'
 import { ButtonIcon } from '@/components/Buttons/ButtonIcon'
 import TextBox from '@/components/Form/TextBox'
 import { useEffect, useState } from 'react'
-import { IMindMap } from '@/dto/mindMapDTO'
 import { useRouter } from 'next/navigation'
+import { BrainMap } from '@prisma/client'
 
 const createMindMapSchema = z.object({
   category: z
@@ -47,7 +47,7 @@ type mindMapInputs = z.infer<typeof createMindMapSchema>
 
 interface ICreateMindMapFormProps {
   userId: string
-  mindMap?: IMindMap | null
+  mindMap?: BrainMap | null
 }
 
 export function CreateMindMapForm({
