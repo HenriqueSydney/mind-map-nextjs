@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default function mindMapFormatTopic(data: any) {
   data.forEach((item: any) => {
     if (item.resumo !== undefined) {

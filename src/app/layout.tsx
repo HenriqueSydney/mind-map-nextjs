@@ -5,9 +5,6 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import { Roboto, Shrikhand } from 'next/font/google'
 
-import { PrismicPreview } from '@prismicio/next'
-import { repositoryName } from '../services/prismic/prismicio'
-
 import { NextAuthProvider } from '@/providers/NextAuthProvider'
 
 import { Header } from '@/components/Header'
@@ -34,13 +31,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${shrikhand.className} ${roboto.className}`}>
-        {/* <ReactQueryClientProvider> */}
         <NextAuthProvider>
           <Header />
           <div className={styles.container}>{children}</div>
         </NextAuthProvider>
-        {/* </ReactQueryClientProvider> */}
-        {/* <PrismicPreview repositoryName={repositoryName} /> */}
       </body>
     </html>
   )
