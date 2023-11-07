@@ -128,6 +128,33 @@ export function CreateMindMapForm({
     }
   }
 
+  async function handleGoDeleteMindmap() {
+    try {
+      const response = await fetch('/api/mindmap', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          mindMapId: mindMap?.id,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error()
+      }
+
+      toast.success(`Mapa mental deletado com sucesso`)
+      setTimeout(() => {
+        reset()
+        router.push('/')
+      }, 2000)
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data)
+      } else {
+        toast.error('Erro interno do sistema. Equipe de suporte foi notificada')
+      }
+    }
+  }
+
   function handleGoBack() {
     router.push(`/repository/${userId}`)
   }
@@ -231,6 +258,16 @@ export function CreateMindMapForm({
               variant="SECONDARY"
               onClick={() => handleGoBack()}
             />
+
+            {mindMap && (
+              <ButtonIcon
+                type="button"
+                title="Deletar"
+                variant="SECONDARY"
+                isSubmitting={isSubmitting}
+                onClick={() => handleGoDeleteMindmap()}
+              />
+            )}
           </div>
         </form>
       </fieldset>

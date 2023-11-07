@@ -178,6 +178,63 @@ export async function PUT(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+      return NextResponse.json({ message: 'User not found' }, { status: 400 })
+    }
+
+    const permittedAccounts = env.PERMISSION_ACCOUNTS.split(',')
+
+    if (!permittedAccounts.includes(session.user.email)) {
+      return NextResponse.json(
+        { message: 'User do not have permission' },
+        { status: 400 },
+      )
+    }
+
+    const createMindMapParamsSchema = z.object({
+      mindMapId: z.string({
+        required_error: 'ID do mapa não informado',
+      }),
+    })
+
+    const { mindMapId } = createMindMapParamsSchema.parse(await request.json())
+
+    const mindMapInfo = await prisma.brainMap.findFirst({
+      where: {
+        id: String(mindMapId),
+      },
+    })
+
+    if (!mindMapInfo) {
+      return NextResponse.json(
+        { message: 'Mindmap not found' },
+        { status: 400 },
+      )
+    }
+
+    if (mindMapInfo.user_id !== session.user.id) {
+      return NextResponse.json(
+        { message: 'User not allowed to update another user Mindmap' },
+        { status: 400 },
+      )
+    }
+
+    const newMindMap = await prisma.brainMap.delete({
+      where: {
+        id: String(mindMapId),
+      },
+    })
+
+    return NextResponse.json(newMindMap, { status: 200 })
+  } catch (error) {
+    return NextResponse.json(null, { status: 500 })
+  }
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const userId = searchParams.get('userId')
