@@ -33,7 +33,7 @@ export default function MindMapContainer({ mindMap }: IMindMapContainer) {
       const mindMapInfo = {
         meta: {
           name: 'example',
-          author: 'Henrique Sydney',
+          author: 'Henrique Sydney Lima',
           version: '0.2',
         },
         format: 'node_array',
