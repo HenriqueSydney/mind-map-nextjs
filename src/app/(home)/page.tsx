@@ -12,7 +12,7 @@ interface IUser {
 }
 
 async function getUsers(): Promise<IUser[]> {
-  const users = await fetch('/api/user', {
+  const users = await fetch('https://mindmap-iota.vercel.app/api/user', {
     cache: 'no-store',
   })
 
