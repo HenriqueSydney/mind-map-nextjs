@@ -1,4 +1,3 @@
-import { getMindMap } from '@/services/getMindMap'
 import MindMapContainer from './components/MindMapContainer'
 import styles from './page.module.scss'
 import { Fieldset } from '@/components/Form/Fieldset/Fieldset'
@@ -8,6 +7,8 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import mindMapsService from '@/services/mindMapsServices'
+import { redirect } from 'next/navigation'
 
 interface IMindMapProps {
   params: {
@@ -19,7 +20,13 @@ export default async function MindMap({
   params: { mind_map_id },
 }: IMindMapProps) {
   const session = await getServerSession(authOptions)
-  const mindMap = await getMindMap({ mind_map_id })
+  const { getMindMapsById } = mindMapsService()
+  const mindMap = await getMindMapsById(mind_map_id)
+
+  if (!mindMap) {
+    redirect('/')
+  }
+
   return (
     <>
       <div className={styles.title}>

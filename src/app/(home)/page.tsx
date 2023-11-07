@@ -5,25 +5,10 @@ import { MainButtonIcons } from '@/components/Buttons/MainButtonIcons'
 
 import styles from './page.module.scss'
 import Link from 'next/link'
-
-interface IUser {
-  id: string
-  name: string
-}
-
-async function getUsers(): Promise<IUser[]> {
-  const users = await fetch('/api/user', {
-    cache: 'no-store',
-  })
-
-  if (!users.ok) {
-    throw new Error('Users not found')
-  }
-
-  return users.json()
-}
+import userService from '@/services/userServices'
 
 export default async function Home() {
+  const { getUsers } = userService()
   const users = await getUsers()
 
   return (
@@ -31,7 +16,7 @@ export default async function Home() {
       <main className={styles.container}>
         <div className={styles.linkContainer}>
           {users.map(({ id, name }) => {
-            const splittedName = name.split(' ')
+            const splittedName = name?.split(' ')
             return (
               <Link
                 key={id}
@@ -41,18 +26,20 @@ export default async function Home() {
               >
                 <MainButtonIcons
                   icon={
-                    splittedName[0] === 'Felipe' ? (
+                    splittedName && splittedName[0] === 'Felipe' ? (
                       <FontAwesomeIcon icon={faPersonDressBurst} size="3x" />
                     ) : (
                       <FontAwesomeIcon icon={faUser} size="3x" />
                     )
                   }
                   title={
-                    splittedName[0] === 'Felipe'
+                    splittedName && splittedName[0] === 'Felipe'
                       ? 'Bebê Lindinho'
-                      : `${splittedName[0]} ${
+                      : splittedName
+                      ? `${splittedName[0]} ${
                           splittedName[splittedName.length - 1]
                         }`
+                      : 'Unknown'
                   }
                 />
               </Link>

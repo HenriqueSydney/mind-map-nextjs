@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { SearchForm } from './components/SearchForm'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import mindMapsService from '@/services/mindMapsServices'
 
 interface IRepositoryProps {
   params: {
@@ -15,34 +16,12 @@ interface IRepositoryProps {
   }
 }
 
-interface IGetUserMindMapsParams {
-  userId: string
-}
-
-interface IUserMindMaps {
-  id: string
-  name: string
-}
-
-async function getUserMindMaps({
-  userId,
-}: IGetUserMindMapsParams): Promise<IUserMindMaps[]> {
-  const mindMaps = await fetch(`/api/mindmap?userId=${userId}`, {
-    cache: 'no-store',
-  })
-  if (!mindMaps.ok) {
-    throw new Error('MindMaps not found')
-  }
-
-  return mindMaps.json()
-}
-
 export default async function Repository({
   params: { userId },
 }: IRepositoryProps) {
   const session = await getServerSession(authOptions)
-
-  const userMindMaps = await getUserMindMaps({ userId })
+  const { getMindMapsByUserId } = mindMapsService()
+  const userMindMaps = await getMindMapsByUserId(userId)
   return (
     <>
       <main className={styles.container}>
