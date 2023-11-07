@@ -7,12 +7,9 @@ interface IGetUserMindMapsParams {
 export async function getMindMap({
   mind_map_id,
 }: IGetUserMindMapsParams): Promise<IMindMap> {
-  const mindMap = await fetch(
-    `https://mindmap-iota.vercel.app/api/mindmap?mindMapId=${mind_map_id}`,
-    {
-      cache: 'no-store',
-    },
-  )
+  const mindMap = await fetch(`/api/mindmap?mindMapId=${mind_map_id}`, {
+    cache: 'no-store',
+  })
   if (!mindMap.ok) {
     throw new Error('MindMaps not found')
   }
