@@ -27,12 +27,9 @@ interface IUserMindMaps {
 async function getUserMindMaps({
   userId,
 }: IGetUserMindMapsParams): Promise<IUserMindMaps[]> {
-  const mindMaps = await fetch(
-    `http://localhost:3000/api/mindmap?userId=${userId}`,
-    {
-      cache: 'no-store',
-    },
-  )
+  const mindMaps = await fetch(`/api/mindmap?userId=${userId}`, {
+    cache: 'no-store',
+  })
   if (!mindMaps.ok) {
     throw new Error('MindMaps not found')
   }

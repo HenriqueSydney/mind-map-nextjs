@@ -12,7 +12,7 @@ interface IUser {
 }
 
 async function getUsers(): Promise<IUser[]> {
-  const users = await fetch('http://localhost:3000/api/user', {
+  const users = await fetch('/api/user', {
     cache: 'no-store',
   })
 
