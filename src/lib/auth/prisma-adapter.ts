@@ -1,4 +1,4 @@
-import { Adapter } from 'next-auth/adapters'
+import { Adapter, AdapterSession, AdapterUser } from 'next-auth/adapters'
 import prisma from '../prisma'
 
 export function PrismaAdapter(): Adapter {
@@ -42,7 +42,7 @@ export function PrismaAdapter(): Adapter {
           id: updatedUser.id,
           name: updatedUser.name,
           role: updatedUser.role,
-        }
+        } as AdapterUser
       }
 
       const newUser = await prisma.user.create({
@@ -58,7 +58,7 @@ export function PrismaAdapter(): Adapter {
         id: newUser.id,
         name: newUser.name,
         role: newUser.role,
-      }
+      } as AdapterUser
     },
 
     async deleteSession(sessionToken) {
@@ -99,7 +99,7 @@ export function PrismaAdapter(): Adapter {
           name: user.name,
           role: user.role,
         },
-      }
+      } as { session: AdapterSession; user: AdapterUser } | null
     },
 
     async getUser(id) {
@@ -120,7 +120,7 @@ export function PrismaAdapter(): Adapter {
         id: user.id,
         name: user.name,
         role: user.role,
-      }
+      } as AdapterUser | null
     },
 
     async getUserByAccount({ provider, providerAccountId }) {
@@ -149,7 +149,7 @@ export function PrismaAdapter(): Adapter {
         id: user.id,
         name: user.name,
         role: user.role,
-      }
+      } as AdapterUser | null
     },
 
     async getUserByEmail(email) {
@@ -170,7 +170,7 @@ export function PrismaAdapter(): Adapter {
         id: user.id,
         name: user.name,
         role: user.role,
-      }
+      } as AdapterUser | null
     },
 
     async linkAccount(account) {
@@ -225,7 +225,7 @@ export function PrismaAdapter(): Adapter {
         id: updatedUser.id,
         name: updatedUser.name,
         role: updatedUser.role,
-      }
+      } as AdapterUser
     },
   }
 }
