@@ -1,0 +1,22 @@
+.fieldset{       
+    position: relative;
+    width: 75%;
+  
+    margin-top: 1.5rem;
+  
+    padding: 1.5rem;
+  
+    border: 1px solid var(--green-300);
+    border-radius: 6px;
+  
+    h1 {
+      display: block;
+      position: absolute;
+      padding: 0.5rem;
+  
+      margin-top: -2.8rem;
+  
+      background-color: var(--gray-700);
+      color: var(--gray-100);
+    }
+}

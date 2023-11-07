@@ -1,0 +1,60 @@
+
+.box-container {  
+  position: relative;
+  width: 100%;
+
+  .label {
+    position: absolute;
+
+    top: -0.6rem;
+    left: 1rem;
+
+    padding: 0 0.25rem;
+
+    z-index: 1;
+
+    background: var(--gray-700);
+
+    label{
+      color: var(--gray-100);
+      font-weight: 700;
+      font-size: 0.875rem;
+      font-style: italic;
+    }
+  }
+
+  .box-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    width: 100%;
+
+    box-sizing: border-box;
+    padding: 2.25rem 0.75rem;    
+  
+    border: 1px solid var(--green-300);
+    border-radius: 4px;
+    
+    background: var(--gray-700);
+   
+    opacity: 0.8;
+
+    overflow: hidden;
+    overflow-y: auto; 
+
+    span {  
+      font-size: 0.875rem;
+      color: var(--gray-100);   
+    }
+
+    .buttonCopyContainer {
+      position: absolute;
+      right: 0.25rem;
+      top: 0.25rem;
+    }
+  }
+}
+

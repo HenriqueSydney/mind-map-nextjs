@@ -1,37 +1,64 @@
-import { SliderWithParallax } from '@/components/Sliders/SliderWithParallax'
-import { Slider } from '@/components/Sliders/Slider'
-import { Accommodations } from '@/components/Cards/Accommodations'
-import { Activities } from '@/components/Cards/Activities'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPersonDressBurst, faUser } from '@fortawesome/free-solid-svg-icons'
+
+import { MainButtonIcons } from '@/components/Buttons/MainButtonIcons'
 
 import styles from './page.module.scss'
+import Link from 'next/link'
 
-const images = [
-  '/banner.jpg',
-  '/banner2.jpeg',
-  '/camping.jpg',
-  '/chale.jpeg',
-  '/chale1.jpeg',
-  '/rapel.jpeg',
-  '/suite.jpeg',
-]
+interface IUser {
+  id: string
+  name: string
+}
+
+async function getUsers(): Promise<IUser[]> {
+  const users = await fetch('http://localhost:3000/api/user', {
+    cache: 'no-store',
+  })
+
+  if (!users.ok) {
+    throw new Error('Users not found')
+  }
+
+  return users.json()
+}
 
 export default async function Home() {
+  const users = await getUsers()
+
   return (
     <>
-      <div className={styles.banner}>
-        <SliderWithParallax images={images} height={850} />
-      </div>
       <main className={styles.container}>
-        <Accommodations title="Nossas Acomodações" />
-
-        <Activities title="Nossas Atividades" />
-
-        <section className={styles['section-container']}>
-          <h1>Galeria de Fotos</h1>
-          <div className={styles['slider-container']}>
-            <Slider images={images} link="/photo-gallery" />
-          </div>
-        </section>
+        <div className={styles.linkContainer}>
+          {users.map(({ id, name }) => {
+            const splittedName = name.split(' ')
+            return (
+              <Link
+                key={id}
+                href={`/repository/${id}`}
+                passHref
+                className="button-link-main"
+              >
+                <MainButtonIcons
+                  icon={
+                    splittedName[0] === 'Felipe' ? (
+                      <FontAwesomeIcon icon={faPersonDressBurst} size="3x" />
+                    ) : (
+                      <FontAwesomeIcon icon={faUser} size="3x" />
+                    )
+                  }
+                  title={
+                    splittedName[0] === 'Felipe'
+                      ? 'Bebê Lindinho'
+                      : `${splittedName[0]} ${
+                          splittedName[splittedName.length - 1]
+                        }`
+                  }
+                />
+              </Link>
+            )
+          })}
+        </div>
       </main>
     </>
   )

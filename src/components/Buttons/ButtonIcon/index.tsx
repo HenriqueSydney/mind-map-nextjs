@@ -3,7 +3,7 @@ import React, { ForwardRefRenderFunction, forwardRef } from 'react'
 import styles from './styles.module.scss'
 import { ClipLoader } from 'react-spinners'
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon?: any
+  icon?: React.ReactNode
   title?: string
   children?: React.ReactNode
   variant?: 'PRIMARY' | 'SECONDARY'

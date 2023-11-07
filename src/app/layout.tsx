@@ -8,12 +8,9 @@ import { Roboto, Shrikhand } from 'next/font/google'
 import { PrismicPreview } from '@prismicio/next'
 import { repositoryName } from '../services/prismic/prismicio'
 
-import ReactQueryClientProvider from '@/providers/queryClientProvider/ReactQueryClientProvider'
-import { CartContextProvider } from '@/context/CartContext'
 import { NextAuthProvider } from '@/providers/NextAuthProvider'
 
 import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
 
 import styles from './layout.module.scss'
 
@@ -25,8 +22,8 @@ const roboto = Roboto({
 })
 
 export const metadata = {
-  title: 'Chapada Indaia',
-  description: 'CHAPADA DO INDAIA ECOPARQUE LTDA.',
+  title: 'MindMap',
+  description: 'Mapa Mental',
 }
 
 export default function RootLayout({
@@ -37,16 +34,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${shrikhand.className} ${roboto.className}`}>
-        <ReactQueryClientProvider>
-          <NextAuthProvider>
-            <CartContextProvider>
-              <Header />
-              <div className={styles.container}>{children}</div>
-              <Footer />
-            </CartContextProvider>
-          </NextAuthProvider>
-        </ReactQueryClientProvider>
-        <PrismicPreview repositoryName={repositoryName} />
+        {/* <ReactQueryClientProvider> */}
+        <NextAuthProvider>
+          <Header />
+          <div className={styles.container}>{children}</div>
+        </NextAuthProvider>
+        {/* </ReactQueryClientProvider> */}
+        {/* <PrismicPreview repositoryName={repositoryName} /> */}
       </body>
     </html>
   )

@@ -13,10 +13,10 @@
 
       z-index: 1;
 
-      background: var(--gray-100);
+      background: var(--gray-700);
 
       label{
-        color: var(--gray-600);
+        color: var(--gray-100);
         font-weight: 700;
         font-size: 0.875rem;    
         font-style: italic; 
@@ -40,13 +40,13 @@
     
         padding: 0.75rem;
     
-        background: var(--gray-100);
+        background: var(--gray-800);
     
-        border: 1px solid var(--gray-300);
+        border: 1px solid var(--green-300);
         border-radius: 4px;
     
         font-size: 0.875rem;
-        color: var(--gray-700);
+        color: var(--gray-100);
 
         resize: none;
   
@@ -58,6 +58,10 @@
         &::placeholder {
           color: var(--gray-500);
           font-style: italic;
+        }
+
+        &:focus {
+          box-shadow: 0 0 5px var(--green-500)
         }
 
         &:read-only {

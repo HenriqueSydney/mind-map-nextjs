@@ -15,7 +15,7 @@ button.container{
 
   cursor: pointer;
 
-  transition: 0.2s background-color, 0.2s color;
+  transition: 0.2s all;
 
   &.primary {
     border: 0;
@@ -32,13 +32,14 @@ button.container{
   &.secondary {
     background: transparent;
   
-    border: 1px solid var(--green-500);
+    border: 1px solid var(--gray-100);
   
-    color: var(--green-500);
+    color: var(--gray-100);
   
     &:not(:disabled):hover {
       background: var(--green-500);
       color: var(--gray-100);
+      border-color: var(--green-500);
     }
   }
 

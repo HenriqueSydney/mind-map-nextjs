@@ -1,0 +1,196 @@
+.container-jsmind{   
+    position: relative; 
+    width: 100%;  
+    height: 75vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;   
+
+    padding: 2rem 1rem;
+
+    border: 1px solid var(--green-300);
+    border-radius: 6px;
+
+    margin: 2rem 0 1rem 0;
+    overflow: hidden;
+
+    cursor: grab;
+
+    .jsmind-inner {
+        position: relative;
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        outline: none;
+    }
+
+    .jsmind-inner {
+        -moz-user-select: none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .jsmind-inner canvas {
+        position: absolute;
+    }
+
+    svg.jsmind {
+        position: absolute;
+        z-index: 1;
+    }
+    canvas.jsmind {
+        position: absolute;
+        z-index: 1;
+        overflow: visible;
+    }
+
+    jmnodes {       
+        position: absolute; 
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0);
+    } 
+    
+    .jmnode-overflow-wrap jmnodes {
+        min-width: 420px;
+    }
+
+    .jmnode-overflow-hidden jmnode {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    
+    jmnode {
+        position: absolute;
+        cursor: pointer;
+        max-width: 500px;
+        padding: 0.5rem;
+        color: #E1E1E6;
+        font-size: 1rem;
+        margin-top:-1.45rem;
+    }
+
+    jmnode.root {
+        left: 7.3rem !important;
+        margin-top: -1.57rem !important;
+
+        font-size: 24px;
+    }
+    
+    
+    jmnode span.text-mindmap {
+        display: block;
+        margin-bottom:5px; 
+        
+        padding: 0.25rem;
+    }
+    
+    jmnode.selected span.text-mindmap {
+        background-color: #7C7C8A;
+        color: #E1E1E6;
+        font-weight: 700;
+        box-shadow: 2px 2px 8px #29292E;
+        border-radius: 8px;
+    }
+
+
+    jmnode span.text-mindmap:hover {
+        box-shadow: 2px 2px 8px #29292E;
+        background-color: #7C7C8A;
+
+        color: #E1E1E6;
+        font-weight: 700;
+
+        border-radius: 8px;
+
+       
+    }
+
+    jmnode::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px; /* Espessura da linha */
+        background-color: #E1E1E6; /* Cor da linha */
+    }
+   
+    jmexpander {
+        position: absolute;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        
+        margin: 0.5rem 0 0 0.45rem;
+
+        width: 25px;
+        height: 25px;
+
+        font-size: 1rem;
+
+        border: 2px solid #E1E1E6;
+        border-radius: 50%;
+
+        color: #E1E1E6;
+
+        cursor: pointer;
+
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    jmexpander:hover {
+        border-color: #00B37E;
+        color: #00B37E;
+    }
+
+    @media screen and (max-device-width: 1024px) {
+        jmnode {
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        jmnode.root {
+            font-size: 21px;
+        }
+    }
+
+   
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+

@@ -26,20 +26,18 @@ enum Role {
 }
 
 model User {
-  id                      String    @id @default(uuid())
-  name                    String
-  email                   String    @unique
-  emailVerified           DateTime? @map("email_verified")
-  verificationEmailNumber Int?      @map("verification_email_number")
-  hashedPassword          String?   @map("hashed_password")
-  role                    Role      @default(USER)
-  acceptNotifications     Boolean   @default(false) @map("accept_notifications")
-  createdAt               DateTime  @default(now()) @map(name: "created_at")
-  updatedAt               DateTime  @updatedAt @map(name: "updated_at")
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  Order    Order[]
+  accounts  Account[]
+  sessions  Session[]
+  brainmaps BrainMap[]
 
   @@map(name: "users")
 }
@@ -76,81 +74,27 @@ model Session {
   @@map("sessions")
 }
 
-model Accommodation {
-  id        String   @id @default(uuid())
-  name      String
-  quantity  Int
-  price     Int
+model BrainMap {
+  id            String  @id @default(uuid())
+  user_id       String
+  category      String
+  name          String
+  jsonStructure String
+  context       String
+  summary       String?
+
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
-  AccommodationsReservations AccommodationReservation[]
+  user User @relation(fields: [user_id], references: [id])
 
-  @@map(name: "accommodations")
+  @@map(name: "brain_maps")
 }
 
-model Activity {
-  id          String   @id @default(uuid())
-  name        String
-  adultPrice  Int      @map(name: "adult_price")
-  childPrice  Int      @map(name: "child_price")
-  seniorPrice Int      @map(name: "senior_price")
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+model Prompt {
+  id     String @id @default(uuid())
+  prompt String
 
-  ActivityReservations ActivityReservation[]
-
-  @@map(name: "activities")
-}
-
-model Order {
-  id           String  @id @default(uuid())
-  status       Status  @default(PENDING)
-  paymentId    Int?    @map(name: "payment_id")
-  guest_name   String
-  email        String
-  userId       String?
-  preferenceId String  @unique @map(name: "preference_id")
-
-  AccommodationsReservations AccommodationReservation[]
-  ActivityReservations       ActivityReservation[]
-  User                       User?                      @relation(fields: [userId], references: [id])
-
-  @@map(name: "order")
-}
-
-model AccommodationReservation {
-  id              String   @id @default(uuid())
-  accommodationId String   @map(name: "accommodation_id")
-  quantity        Int
-  totalPrice      Int      @map(name: "total_price")
-  pricePerDay     Int      @map(name: "price_per_day")
-  arrivalDate     DateTime @map(name: "arrival_date")
-  departureDate   DateTime @map(name: "departure_date")
-  orderId         String   @default(uuid())
-  createdAt       DateTime @default(now()) @map(name: "created_at")
-  updatedAt       DateTime @updatedAt @map(name: "updated_at")
-
-  Accommodation Accommodation? @relation(fields: [accommodationId], references: [id])
-  Order         Order?         @relation(fields: [orderId], references: [id])
-
-  @@map(name: "accommodation_reservations")
-}
-
-model ActivityReservation {
-  id                String   @id @default(uuid())
-  activityId        String   @map(name: "activity_id")
-  quantityOfAdults  Int      @map(name: "quantity_of_adults")
-  quantityOfChilds  Int      @map(name: "quantity_of_childs")
-  quantityOfSeniors Int      @map(name: "quantity_of_seniors")
-  totalPrice        Int      @map(name: "total_price")
-  date              DateTime @map(name: "date")
-  orderId           String   @default(uuid())
-  createdAt         DateTime @default(now()) @map(name: "created_at")
-  updatedAt         DateTime @updatedAt @map(name: "updated_at")
-
-  Activity Activity? @relation(fields: [activityId], references: [id])
-  Order    Order?    @relation(fields: [orderId], references: [id])
-
-  @@map(name: "activity_reservations")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 }

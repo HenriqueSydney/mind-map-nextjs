@@ -41,12 +41,14 @@ export default function NotFound() {
                   title="Voltar"
                   icon={<FontAwesomeIcon icon={faArrowLeft} />}
                   onClick={handleGoBack}
+                  variant="SECONDARY"
                 />
 
                 <ButtonIcon
                   title="Ir para página inicial"
                   icon={<FontAwesomeIcon icon={faHome} />}
                   onClick={handleGoHome}
+                  variant="SECONDARY"
                 />
               </div>
             </main>
