@@ -70,10 +70,12 @@ export default async function MindMap({
               <label>Contexto:</label>
               <span>{mindMap.context}</span>
             </div>
-            <div className={styles.info}>
-              <label>Resumo:</label>
-              <span>{mindMap.summary}</span>
-            </div>
+            {mindMap.summary !== '' && (
+              <div className={styles.info}>
+                <label>Resumo:</label>
+                <span>{mindMap.summary}</span>
+              </div>
+            )}
           </div>
         </Fieldset>
       </main>
