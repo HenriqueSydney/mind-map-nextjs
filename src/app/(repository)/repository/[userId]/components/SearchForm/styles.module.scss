@@ -7,7 +7,9 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+
   input {
+    
     flex: 1;
     border-radius: 6px;
     border: 0;
@@ -18,6 +20,26 @@
       color: var(--gray-500);
     }
   }
+
+  .buttonWithText {
+    display: block;
+  }
+
+  .buttonJustIcon {
+      display: none;
+  }
+
+  @media (max-width: 50rem) {
+      top: 0.75rem;
+      .buttonWithText {
+          display: none;
+      }
+
+      .buttonJustIcon {
+          display: block;
+      }
+  } 
+
   button {
     display: flex;
     align-items: center;

@@ -6,19 +6,30 @@
     gap: 2rem;
 
     width: 100%;
-    max-width: 90rem;
+   
     margin: 4rem auto 0;
     padding: 0 10rem;  
-   
+
+    @media (max-width: 50rem) {
+        margin: 1rem auto 0;
+    }   
 
     .linkContainer {
+        width: 100%;
         display: flex;
         align-items: center;       
         justify-content: center;
         flex-wrap: wrap;
 
-
         gap: 1.5rem;
+
+        @media (max-width: 50rem) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;    
+            gap: 1rem;
+
+
+        } 
     }
 
 

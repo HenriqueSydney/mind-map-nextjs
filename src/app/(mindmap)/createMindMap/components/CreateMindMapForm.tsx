@@ -16,6 +16,7 @@ import TextBox from '@/components/Form/TextBox'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BrainMap } from '@prisma/client'
+import { Fieldset } from '@/components/Form/Fieldset/Fieldset'
 
 const createMindMapSchema = z.object({
   category: z
@@ -197,9 +198,13 @@ export function CreateMindMapForm({
   }, [summaryText, contextText])
   return (
     <div className={styles.container}>
-      <fieldset className={styles.fieldset}>
-        <h1>Cadastrar um novo Mapa Mental</h1>
-        <form onSubmit={handleSubmit(createMindMap)}>
+      <Fieldset
+        title={mindMap ? 'Atualizar Mapa Mental' : 'Cadastrar Mapa Mental'}
+      >
+        <form
+          onSubmit={handleSubmit(createMindMap)}
+          className={styles.formContainer}
+        >
           <InputText
             label="Categoria"
             placeholder="Informe a categoria"
@@ -263,14 +268,14 @@ export function CreateMindMapForm({
               <ButtonIcon
                 type="button"
                 title="Deletar"
-                variant="SECONDARY"
-                isSubmitting={isSubmitting}
+                variant="REMOVE"
+                disabled={isSubmitting}
                 onClick={() => handleGoDeleteMindmap()}
               />
             )}
           </div>
         </form>
-      </fieldset>
+      </Fieldset>
       <Toast />
     </div>
   )

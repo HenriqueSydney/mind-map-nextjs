@@ -6,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode
   title?: string
   children?: React.ReactNode
-  variant?: 'PRIMARY' | 'SECONDARY'
+  variant?: 'PRIMARY' | 'SECONDARY' | 'REMOVE'
   numberOfItems?: number
   isSubmitting?: boolean
 }
@@ -23,7 +23,12 @@ const ButtonBase: ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   },
   ref,
 ) => {
-  const variantColor = variant === 'PRIMARY' ? styles.primary : styles.secondary
+  const variantColor =
+    variant === 'PRIMARY'
+      ? styles.primary
+      : variant === 'SECONDARY'
+      ? styles.secondary
+      : styles.delete
   return (
     <button
       className={`${styles.container} ${variantColor} ${

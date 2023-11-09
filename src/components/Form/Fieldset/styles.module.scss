@@ -8,6 +8,10 @@
   
     border: 1px solid var(--green-300);
     border-radius: 6px;
+
+    @media (max-width: 70rem) {
+      width: 100%;
+    } 
   
     h1 {
       display: block;
@@ -18,5 +22,13 @@
   
       background-color: var(--gray-700);
       color: var(--gray-100);
+
+      @media (max-width: 50rem) {
+        font-size: 1.25rem;
+      }  
+
+      @media (max-width: 35rem) {
+        font-size: 1rem;
+      }  
     }
 }

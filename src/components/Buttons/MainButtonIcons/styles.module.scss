@@ -27,4 +27,11 @@
     border: 2px solid var(--green-500);
     transition: all 0.2s;
   }
+
+  @media (max-width: 50rem) {
+    height: 10rem;
+    width: 10rem;
+    font-size: 0.875rem;
+    gap: 1rem;
+  } 
 }

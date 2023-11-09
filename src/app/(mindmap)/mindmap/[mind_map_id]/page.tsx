@@ -29,48 +29,50 @@ export default async function MindMap({
 
   return (
     <>
-      <div className={styles.title}>
-        <h1>{mindMap.name}</h1>
-      </div>
-
       <main className={styles.container}>
+        <div className={styles.title}>
+          <h1>{mindMap.name}</h1>
+        </div>
+
         {session?.user.id === mindMap.user_id && (
           <div className={styles.buttonContainer}>
-            <Link href={`/createMindMap/${mind_map_id}`} passHref>
-              <ButtonIcon
-                variant="SECONDARY"
-                title="Editar Mapa Mental"
-                icon={<FontAwesomeIcon icon={faPencil} />}
-              />
-            </Link>
+            <div className={styles.buttonWithText}>
+              <Link href={`/createMindMap/${mind_map_id}`} passHref>
+                <ButtonIcon
+                  variant="SECONDARY"
+                  title="Editar Mapa Mental"
+                  icon={<FontAwesomeIcon icon={faPencil} />}
+                />
+              </Link>
+            </div>
+            <div className={styles.buttonJustIcon}>
+              <Link href={`/createMindMap/${mind_map_id}`} passHref>
+                <ButtonIcon
+                  variant="SECONDARY"
+                  icon={<FontAwesomeIcon icon={faPencil} />}
+                />
+              </Link>
+            </div>
           </div>
         )}
         <MindMapContainer mindMap={mindMap} />
         <Fieldset title="Informações sobre o Mapa Mental">
           <div className={styles.infoContainer}>
-            <div>
-              <div className={styles.info}>
-                <label>Categoria:</label>
-                <span>{mindMap.category}</span>
-              </div>
-              <div className={styles.info}>
-                <label>Nome:</label>
-                <span>{mindMap.name}</span>
-              </div>
-              <div className={styles.info}>
-                <label>Contexto:</label>
-                <span>{mindMap.context}</span>
-              </div>
-              <div className={styles.info}>
-                <label>Resumo:</label>
-                <span>{mindMap.summary}</span>
-              </div>
+            <div className={styles.info}>
+              <label>Categoria:</label>
+              <span>{mindMap.category}</span>
             </div>
-            <div>
-              <div className={styles.info}>
-                <label>Estrutura JSON utilizada:</label>
-                <span>{mindMap.jsonStructure}</span>
-              </div>
+            <div className={styles.info}>
+              <label>Nome:</label>
+              <span>{mindMap.name}</span>
+            </div>
+            <div className={styles.info}>
+              <label>Contexto:</label>
+              <span>{mindMap.context}</span>
+            </div>
+            <div className={styles.info}>
+              <label>Resumo:</label>
+              <span>{mindMap.summary}</span>
             </div>
           </div>
         </Fieldset>

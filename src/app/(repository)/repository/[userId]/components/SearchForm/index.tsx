@@ -1,16 +1,17 @@
 'use client'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import Link from 'next/link'
 
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-import styles from './styles.module.scss'
-import Link from 'next/link'
 import { ButtonIcon } from '@/components/Buttons/ButtonIcon'
+
+import styles from './styles.module.scss'
 
 const searchFromSchema = z.object({
   query: z.string(),
@@ -23,11 +24,7 @@ interface ISearchForm {
 }
 
 export function SearchForm({ isSameAuthorOfRepository }: ISearchForm) {
-  const {
-    register,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<SearchFormInputs>({
+  const { register, watch } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFromSchema),
   })
 
@@ -68,14 +65,31 @@ export function SearchForm({ isSameAuthorOfRepository }: ISearchForm) {
       />
 
       {isSameAuthorOfRepository && (
-        <Link href="/createMindMap" passHref>
-          <ButtonIcon
-            type="button"
-            title="Mapa Mental"
-            variant="SECONDARY"
-            icon={<FontAwesomeIcon icon={faPlusCircle} size="1x" />}
-          />
-        </Link>
+        <div>
+          <Link
+            href="/createMindMap"
+            passHref
+            className={styles.buttonWithText}
+          >
+            <ButtonIcon
+              type="button"
+              title="Mapa Mental"
+              variant="SECONDARY"
+              icon={<FontAwesomeIcon icon={faPlusCircle} size="1x" />}
+            />
+          </Link>
+          <Link
+            href="/createMindMap"
+            passHref
+            className={styles.buttonJustIcon}
+          >
+            <ButtonIcon
+              type="button"
+              variant="SECONDARY"
+              icon={<FontAwesomeIcon icon={faPlusCircle} size="1x" />}
+            />
+          </Link>
+        </div>
       )}
     </form>
   )
